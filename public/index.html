@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevkiyat Takip Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header><h1>Sevkiyat Takip Sistemi</h1></header>
+        <main>
+            <section class="form-section card">
+                <h2 id="form-basligi">Yeni Sevkiyat Ekle</h2>
+                <form id="sevkiyat-form">
+                    <input type="hidden" id="edit-id">
+                    <div class="form-group"><label for="sevkiyat-id">Sevkiyat ID</label><input type="text" id="sevkiyat-id" required></div>
+                    <div class="form-group"><label for="ad-soyad">Ad Soyad</label><input type="text" id="ad-soyad"></div>
+                    <div class="form-group"><label for="toplam-tutar">Toplam Tutar (₺)</label><input type="number" id="toplam-tutar" min="0.01" step="0.01" required></div>
+                    <div class="form-group"><label for="sevk-eden-firma">Sevk Eden Firma</label><input type="text" id="sevk-eden-firma"></div>
+                    <div class="form-group"><label for="sevk-tarihi">Sevk Tarihi</label><input type="date" id="sevk-tarihi" required></div>
+                    <button type="submit" id="kaydet-btn">Kaydet</button>
+                    <button type="button" id="iptal-btn" class="secondary-btn" style="display: none;">İptal</button>
+                </form>
+            </section>
+            <section class="data-section">
+                <div class="summary-cards">
+                    <div class="card"><h3>Toplam Sevkiyat</h3><p id="toplam-sevkiyat">0</p></div>
+                    <div class="card"><h3>Toplam Tutar</h3><p id="ozet-toplam-tutar">0 ₺</p></div>
+                    <div class="card"><h3>Ortalama Tutar</h3><p id="ortalama-tutar">0 ₺</p></div>
+                </div>
+                <div class="chart-container card"><h2>Haftalık Tutar Dağılımı</h2><canvas id="sevkiyat-grafigi"></canvas></div>
+                <div class="table-container card">
+                    <div class="table-header">
+                        <h2>Sevkiyat Listesi</h2>
+                        <div class="filters">
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all">Tümü</button>
+                                <button class="filter-btn" data-filter="this_week">Bu Hafta</button>
+                            </div>
+                            <div class="date-range-filter">
+                                <input type="date" id="start-date">
+                                <span>-</span>
+                                <input type="date" id="end-date">
+                                <button id="date-filter-btn">Filtrele</button>
+                            </div>
+                            <div class="export-button">
+                                <button id="csv-indir-btn">CSV İndir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Sevkiyat ID</th><th>Ad Soyad</th><th>Tutar</th><th>Firma</th><th>Tarih</th><th>İşlemler</th></tr></thead>
+                        <tbody id="sevkiyat-tablosu-body"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
