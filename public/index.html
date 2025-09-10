@@ -17,6 +17,14 @@
                     <div class="form-group"><label for="sevkiyat-id">Sevkiyat ID</label><input type="text" id="sevkiyat-id" required></div>
                     <div class="form-group"><label for="ad-soyad">Ad Soyad</label><input type="text" id="ad-soyad"></div>
                     <div class="form-group"><label for="toplam-tutar">Toplam Tutar (₺)</label><input type="number" id="toplam-tutar" min="0.01" step="0.01" required></div>
+                    <div class="form-group"><label for="nakliye-ucreti">Nakliye Ücreti (₺)</label><input type="number" id="nakliye-ucreti" min="0" step="0.01" value="0"></div>
+                    <div class="form-group"><label for="odeme-kaynagi">Kimden Ödendi</label>
+                        <select id="odeme-kaynagi">
+                            <option value="">Seçiniz</option>
+                            <option value="Firma">Firma</option>
+                            <option value="Müşteri">Müşteri</option>
+                        </select>
+                    </div>
                     <div class="form-group"><label for="sevk-eden-firma">Sevk Eden Firma</label><input type="text" id="sevk-eden-firma"></div>
                     <div class="form-group"><label for="sevk-tarihi">Sevk Tarihi</label><input type="date" id="sevk-tarihi" required></div>
                     <button type="submit" id="kaydet-btn">Kaydet</button>
@@ -50,7 +58,7 @@
                         </div>
                     </div>
                     <table>
-                        <thead><tr><th>Sevkiyat ID</th><th>Ad Soyad</th><th>Tutar</th><th>Firma</th><th>Tarih</th><th>İşlemler</th></tr></thead>
+                        <thead><tr><th>Sevkiyat ID</th><th>Ad Soyad</th><th>Tutar</th><th>Nakliye</th><th>Ödeme</th><th>Firma</th><th>Tarih</th><th>İşlemler</th></tr></thead>
                         <tbody id="sevkiyat-tablosu-body"></tbody>
                     </table>
                 </div>

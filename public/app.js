@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const toplamTutarInput = document.getElementById('toplam-tutar');
     const sevkEdenFirmaInput = document.getElementById('sevk-eden-firma');
     const sevkTarihiInput = document.getElementById('sevk-tarihi');
+    const nakliyeUcretiInput = document.getElementById('nakliye-ucreti');
+    const odemeKaynagiSelect = document.getElementById('odeme-kaynagi');
     const tabloBody = document.getElementById('sevkiyat-tablosu-body');
     const formBasligi = document.getElementById('form-basligi');
     const kaydetBtn = document.getElementById('kaydet-btn');
@@ -51,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             sevkiyat_id: sevkiyatIdInput.value, ad_soyad: adSoyadInput.value,
             toplam_tutar: parseFloat(toplamTutarInput.value),
             sevk_eden_firma: sevkEdenFirmaInput.value, sevk_tarihi: sevkTarihiInput.value,
+            nakliye_ucreti: parseFloat(nakliyeUcretiInput?.value || '0'),
+            odeme_kaynagi: odemeKaynagiSelect?.value || null,
         };
         const editId = editIdInput.value;
         try {
@@ -75,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 editIdInput.value = sevkiyat.id; sevkiyatIdInput.value = sevkiyat.sevkiyat_id;
                 adSoyadInput.value = sevkiyat.ad_soyad; toplamTutarInput.value = sevkiyat.toplam_tutar;
                 sevkEdenFirmaInput.value = sevkiyat.sevk_eden_firma; sevkTarihiInput.value = sevkiyat.sevk_tarihi;
+                if (nakliyeUcretiInput) nakliyeUcretiInput.value = sevkiyat.nakliye_ucreti ?? 0;
+                if (odemeKaynagiSelect) odemeKaynagiSelect.value = sevkiyat.odeme_kaynagi || '';
                 formBasligi.textContent = 'Sevkiyatı Düzenle'; kaydetBtn.textContent = 'Güncelle';
                 iptalBtn.style.display = 'block'; window.scrollTo(0, 0);
             }
@@ -101,8 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     csvIndirBtn.addEventListener('click', () => {
         if (tumSevkiyatlar.length === 0) return alert("İndirilecek veri bulunamadı.");
-        const headers = "Sevkiyat ID,Ad Soyad,Toplam Tutar,Sevk Eden Firma,Sevk Tarihi";
-        const rows = tumSevkiyatlar.map(s => [s.sevkiyat_id, s.ad_soyad, s.toplam_tutar, s.sevk_eden_firma, s.sevk_tarihi].join(','));
+        const headers = "Sevkiyat ID,Ad Soyad,Toplam Tutar,Nakliye Ücreti,Ödeme Kaynağı,Sevk Eden Firma,Sevk Tarihi";
+        const rows = tumSevkiyatlar.map(s => [
+            s.sevkiyat_id,
+            s.ad_soyad ?? '',
+            s.toplam_tutar,
+            s.nakliye_ucreti ?? 0,
+            s.odeme_kaynagi ?? '',
+            s.sevk_eden_firma ?? '',
+            s.sevk_tarihi
+        ].join(','));
         const csvContent = "data:text/csv;charset=utf-8," + headers + "\n" + rows.join("\n");
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -125,6 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${s.sevkiyat_id}</td>
                     <td>${s.ad_soyad || '-'}</td>
                     <td>${s.toplam_tutar.toFixed(2)} ₺</td>
+                    <td>${(parseFloat(s.nakliye_ucreti||0)).toFixed(2)} ₺</td>
+                    <td>${s.odeme_kaynagi || '-'}</td>
                     <td>${s.sevk_eden_firma || '-'}</td>
                     <td>${new Date(s.sevk_tarihi).toLocaleDateString('tr-TR')}</td>
                     <td class="action-buttons">
@@ -169,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formBasligi.textContent = 'Yeni Sevkiyat Ekle';
         kaydetBtn.textContent = 'Kaydet';
         iptalBtn.style.display = 'none';
+        if (nakliyeUcretiInput) nakliyeUcretiInput.value = '0';
+        if (odemeKaynagiSelect) odemeKaynagiSelect.value = '';
     };
 
     iptalBtn.addEventListener('click', resetForm);
